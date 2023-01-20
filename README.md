@@ -3,18 +3,115 @@
 My companion code for book [Elixir in Action (Second Edition)](https://www.manning.com/books/elixir-in-action-second-edition) by Saša Jurić.
 
 Compile:
-```
+```bash
 elixirc <FILE>.ex
 ```
 
 All `.beam` files located in the current working directory are loaded automatically when `iex` is started.
 
+Save `iex` command history:
+```bash
+export ELIXIR_ERL_OPTIONS="-kernel shell_history enabled"
+```
+
+## Chapter 4 - Fraction
+
+```elixir
+iex(1)> Fraction.sub(Fraction.new(2,5), Fraction.new(1,4)) |> IO.inspect |> Fraction.value
+%Fraction{a: 3, b: 20}
+0.15
+
+iex(2)> Fraction.new(1,3) |> IO.puts   
+1 / 3
+:ok
+```
+
+## Chapter 4 - TodoList1
+
+```elixir
+iex(1)> todos = TodoList1.new
+%{}
+
+iex(2)> TodoList1.add_entry(todos, ~D[2023-01-19], "lorem ipsum")
+%{~D[2023-01-19] => ["lorem ipsum"]}
+
+iex(3)> todos = TodoList1.add_entry(todos, ~D[2023-01-19], "lorem ipsum")
+%{~D[2023-01-19] => ["lorem ipsum"]}
+
+iex(4)> todos = TodoList1.add_entry(todos, ~D[2023-01-20], "dolor sit amet")
+%{~D[2023-01-19] => ["lorem ipsum"], ~D[2023-01-20] => ["dolor sit amet"]}
+
+iex(5)> todos = TodoList1.add_entry(todos, ~D[2023-01-20], "consectetur adipiscing")
+%{
+  ~D[2023-01-19] => ["lorem ipsum"],
+  ~D[2023-01-20] => ["consectetur adipiscing", "dolor sit amet"]
+}
+
+iex(6)> todos = TodoList1.add_entry(todos, ~D[2023-01-21], "sed do eiusmod")        
+%{
+  ~D[2023-01-19] => ["lorem ipsum"],
+  ~D[2023-01-20] => ["consectetur adipiscing", "dolor sit amet"],
+  ~D[2023-01-21] => ["sed do eiusmod"]
+}
+
+iex(7)> TodoList1.entries(todos, ~D[2023-01-21])
+["sed do eiusmod"]
+```
+
+## Chapter 4 - TodoList2
+
+```elixir
+iex(1)> todos = TodoList2.new |> 
+TodoList2.add_entry(%{date: ~D[2023-01-19], title: "lorem ipsum"}) |> 
+TodoList2.add_entry(%{date: ~D[2023-01-19], title: "dolor sit amet"}) |> 
+TodoList2.add_entry(%{date: ~D[2023-01-20], title: "consectetur adipiscing elit"})
+%TodoList2{
+  auto_id: 4,
+  entries: %{
+    1 => %{date: ~D[2023-01-19], title: "lorem ipsum"},
+    2 => %{date: ~D[2023-01-19], title: "dolor sit amet"},
+    3 => %{date: ~D[2023-01-20], title: "consectetur adipiscing elit"}
+  }
+}
+
+iex(2)> todos = TodoList2.update_entry(todos, 2, &Map.put(&1, :date, ~D[2023-01-20]))
+%TodoList2{
+  auto_id: 4,
+  entries: %{
+    1 => %{date: ~D[2023-01-19], title: "lorem ipsum"},
+    2 => %{date: ~D[2023-01-20], title: "dolor sit amet"},
+    3 => %{date: ~D[2023-01-20], title: "consectetur adipiscing elit"}
+  }
+}
+
+iex(3)> todos = TodoList2.delete_entry(todos, 2)
+%TodoList2{
+  auto_id: 4,
+  entries: %{
+    1 => %{date: ~D[2023-01-19], title: "lorem ipsum"},
+    3 => %{date: ~D[2023-01-20], title: "consectetur adipiscing elit"}
+  }
+}
+```
+
+Importing from CSV:
+```elixir
+iex(1)> todos = TodoList2.CsvImporter.import("todo-list.csv") |> TodoList2.new
+%TodoList2{
+  auto_id: 4,
+  entries: %{
+    1 => %{date: ~D[2023-01-20], title: "Dentist"},
+    2 => %{date: ~D[2023-01-21], title: "Shopping"},
+    3 => %{date: ~D[2023-01-22], title: "Movies"}
+  }
+}
+```
 ## Chapter 5 - DatabaseServer
 
 The usage of both `DatabaseServer1` (stateless) and `DatabaseServer2` (stateful) is identical.
 
 Sequential usage:
-```
+```elixir
 iex(1)> pid = DatabaseServer1.start
 #PID<0.108.0>
 
@@ -35,7 +132,7 @@ iex(6)> DatabaseServer1.get_result
 ```
 
 Parallel usage:
-```
+```elixir
 iex(8)> pool = Enum.map(1..100, fn _ -> DatabaseServer1.start end)
 [#PID<0.117.0>, #PID<0.118.0>, #PID<0.119.0>, #PID<0.120.0>, #PID<0.121.0>,
  #PID<0.122.0>, #PID<0.123.0>, #PID<0.124.0>, #PID<0.125.0>, #PID<0.126.0>,
@@ -60,7 +157,7 @@ iex(10)> Enum.map(1..20, fn _ -> DatabaseServer1.get_result end)
 
 ## Chapter 5 - Calculator
 
-```
+```elixir
 iex(1)> pid = Calculator.start
 #PID<0.108.0>
 
