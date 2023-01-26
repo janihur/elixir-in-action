@@ -1,6 +1,6 @@
 # Code for Elixir in Action
 
-My companion code for book [Elixir in Action (Second Edition)](https://www.manning.com/books/elixir-in-action-second-edition) by Saša Jurić.
+My companion code and notes for book [Elixir in Action (Second Edition)](https://www.manning.com/books/elixir-in-action-second-edition) by Saša Jurić. The original book example code is available in https://github.com/sasa1977/elixir-in-action
 
 Compile:
 ```bash
@@ -178,4 +178,69 @@ iex(6)> Calculator.div(pid, 5)
 
 iex(7)> Calculator.value(pid)
 3.0
+```
+
+## Chapter 6 - Generic Server Process #1
+
+The generic server process is hidden behind `KeyValueStore1` interface functions `start/0`, `put/3` and `get/2`:
+```elixir
+iex(1)> kv = KeyValueStore1.start
+#PID<0.112.0>
+
+iex(2)> KeyValueStore1.put(kv, :foo, "this is foo (atom)")
+:ok
+
+iex(3)> KeyValueStore1.put(kv, "foo", "this is foo (string)")
+:ok
+
+iex(4)> KeyValueStore1.put(kv, :bar, "this is bar (atom)")   
+:ok
+
+iex(5)> KeyValueStore1.get(kv, :foo)
+"this is foo (atom)"
+
+iex(6)> KeyValueStore1.get(kv, "foo")
+"this is foo (string)"
+
+iex(7)> KeyValueStore1.get(kv, "zoo")
+nil
+```
+
+## Chapter 6 - Generic Server Process #2
+
+Adds support for asyncronous calls (i.e. _cast_ in Erlang ecosystem jargon).
+```elixir
+iex(1)> kv = KeyValueStore2.start                         
+#PID<0.112.0>
+
+iex(2)> KeyValueStore2.put(kv, :foo, "this is foo (atom)")
+{:cast, {:put, :foo, "this is foo (atom)"}}
+
+iex(3)> KeyValueStore2.get(kv, :foo)                      
+"this is foo (atom)"
+
+iex(4)> KeyValueStore2.get(kv, :bar)
+nil
+```
+
+## Chapter 6 - TodoList with Generic Server Process
+
+```elixir
+iex(1)> pid = TodoServer.start()
+#PID<0.112.0>
+
+iex(2)> TodoServer.add_entry(pid, %{date: ~D[2023-01-26], title: "lorem ipsum"})
+{:cast, {:add_entry, %{date: ~D[2023-01-26], title: "lorem ipsum"}}}
+
+iex(3)> TodoServer.add_entry(pid, %{date: ~D[2023-01-27], title: "dolor sit amet"})
+{:cast, {:add_entry, %{date: ~D[2023-01-27], title: "dolor sit amet"}}}
+
+iex(4)> TodoServer.entries(pid, ~D[2023-01-26])
+[%{date: ~D[2023-01-26], title: "lorem ipsum"}]
+
+iex(5)> TodoServer.entries(pid, ~D[2023-01-27])
+[%{date: ~D[2023-01-27], title: "dolor sit amet"}]
+
+iex(6)> TodoServer.entries(pid, ~D[2023-01-28])
+[]
 ```

@@ -3,15 +3,19 @@ Elixir.Calculator.beam \
 Elixir.DatabaseServer1.beam \
 Elixir.DatabaseServer2.beam \
 Elixir.Fraction.beam \
+Elixir.KeyValueStore1.beam \
+Elixir.KeyValueStore2.beam \
 Elixir.MultiDict.beam \
+Elixir.ServerProcess1.beam \
+Elixir.ServerProcess2.beam \
 Elixir.String.Chars.Fraction.beam \
 Elixir.TodoList1.beam \
 Elixir.TodoList2.beam \
-Elixir.TodoList2.CsvImporter.beam
+Elixir.TodoList2.CsvImporter.beam \
+Elixir.TodoServer.beam
 
 .PHONY: all
 all: $(BEAM)
-
 
 Elixir.Calculator.beam : ch05-02-Calculator.ex
 	@echo "building: $@"
@@ -29,7 +33,23 @@ Elixir.Fraction.beam : ch04-01-Fraction.ex
 	@echo "building: $@"
 	@elixirc $^
 
+Elixir.KeyValueStore1.beam : ch06-02-KeyValueStore1.ex
+	@echo "building: $@"
+	@elixirc $^
+
+Elixir.KeyValueStore2.beam : ch06-04-KeyValueStore2.ex
+	@echo "building: $@"
+	@elixirc $^
+
 Elixir.MultiDict.beam : ch04-03-MultiDict.ex
+	@echo "building: $@"
+	@elixirc $^
+
+Elixir.ServerProcess1.beam : ch06-01-ServerProcess1.ex
+	@echo "building: $@"
+	@elixirc $^
+
+Elixir.ServerProcess2.beam : ch06-03-ServerProcess2.ex
 	@echo "building: $@"
 	@elixirc $^
 
@@ -48,9 +68,9 @@ Elixir.TodoList2.beam Elixir.TodoList2.CsvImporter.beam &: ch04-05-TodoList2.ex
 	@echo "building: Elixir.TodoList2.CsvImporter.beam"
 	@elixirc $^
 
-# Elixir.TodoList2.CsvImporter.beam: ch04-05-TodoList2.ex
-# 	@echo "building: $@"
-# 	@elixirc $^
+Elixir.TodoServer.beam : ch06-05-TodoServer.ex
+	@echo "building: $@"
+	@elixirc $^
 
 .PHONY: clean
 clean:
