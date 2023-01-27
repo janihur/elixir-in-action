@@ -5,6 +5,7 @@ Elixir.DatabaseServer2.beam \
 Elixir.Fraction.beam \
 Elixir.KeyValueStore1.beam \
 Elixir.KeyValueStore2.beam \
+Elixir.KeyValueStore3.beam \
 Elixir.MultiDict.beam \
 Elixir.ServerProcess1.beam \
 Elixir.ServerProcess2.beam \
@@ -12,7 +13,8 @@ Elixir.String.Chars.Fraction.beam \
 Elixir.TodoList1.beam \
 Elixir.TodoList2.beam \
 Elixir.TodoList2.CsvImporter.beam \
-Elixir.TodoServer.beam
+Elixir.TodoServer.beam \
+Elixir.TodoServer2.beam
 
 .PHONY: all
 all: $(BEAM)
@@ -38,6 +40,10 @@ Elixir.KeyValueStore1.beam : ch06-02-KeyValueStore1.ex
 	@elixirc $^
 
 Elixir.KeyValueStore2.beam : ch06-04-KeyValueStore2.ex
+	@echo "building: $@"
+	@elixirc $^
+
+Elixir.KeyValueStore3.beam : ch06-06-KeyValueStore3.ex
 	@echo "building: $@"
 	@elixirc $^
 
@@ -69,6 +75,10 @@ Elixir.TodoList2.beam Elixir.TodoList2.CsvImporter.beam &: ch04-05-TodoList2.ex
 	@elixirc $^
 
 Elixir.TodoServer.beam : ch06-05-TodoServer.ex
+	@echo "building: $@"
+	@elixirc $^
+
+Elixir.TodoServer2.beam : ch06-07-TodoServer2.ex
 	@echo "building: $@"
 	@elixirc $^
 

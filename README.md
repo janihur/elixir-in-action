@@ -244,3 +244,66 @@ iex(5)> TodoServer.entries(pid, ~D[2023-01-27])
 iex(6)> TodoServer.entries(pid, ~D[2023-01-28])
 []
 ```
+
+## Chapter 6 - KeyValueStore with Elixir GenServer
+
+Inspect runtime date with: [`__info__/1`](https://hexdocs.pm/elixir/1.14.1/Module.html#c:__info__/1).
+
+```elixir
+iex(1)> KeyValueStore3.__info__(:functions)
+[
+  child_spec: 1,
+  code_change: 3,
+  handle_call: 3,
+  handle_cast: 2,
+  handle_info: 2,
+  init: 1,
+  terminate: 2
+]
+```
+
+```elixir
+iex(1)> {:ok, kv} = KeyValueStore3.start()
+{:ok, #PID<0.117.0>}
+
+iex(2)> KeyValueStore3.put(kv, :foo, "this is foo (atom)")
+:ok
+
+iex(3)> KeyValueStore3.get(kv, :foo)
+"this is foo (atom)"
+```
+
+```elixir
+iex(1)> {:ok, kv} = KeyValueStore3.start()
+{:ok, #PID<0.112.0>}
+
+iex(2)> Process.alive?(kv)                
+true
+:cleanup1 message received
+:cleanup1 message received
+:cleanup2 message received
+:cleanup1 message received                
+
+iex(3)> KeyValueStore3.stop(kv)
+cleanup before server is terminated
+:ok
+
+iex(4)> Process.alive?(kv)     
+false
+```
+
+## Chapter 6 - TodoServer with Elixir GenServer
+
+```elixir
+iex(1)> {:ok, pid} = TodoServer2.start()
+{:ok, #PID<0.112.0>}
+
+iex(2)> TodoServer2.entries(pid, ~D[2023-01-27])
+[]
+
+iex(3)> TodoServer2.add_entry(pid, %{date: ~D[2023-01-27], title: "lorem ipsum"})
+:ok
+
+iex(4)> TodoServer2.entries(pid, ~D[2023-01-27])                                 
+[%{date: ~D[2023-01-27], title: "lorem ipsum"}]
+```
