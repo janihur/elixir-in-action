@@ -27,7 +27,7 @@ iex(4)> :erlang.system_info(:process_count)
 100065
 ```
 
-TODO: send message to each server
+TODO: Example how to send a message to each server
 
 Save persistent entry:
 ```elixir
@@ -53,3 +53,6 @@ iex(3)> Todo.Server.entries(foo, ~D[2023-02-07])
 [%{date: ~D[2023-02-07], id: 1, title: "dentist"}]
 ```
 
+## Todo V2
+
+The same than V1 but with pooling. The user inteface is the same than in V1.
