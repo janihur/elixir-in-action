@@ -307,3 +307,10 @@ iex(3)> TodoServer2.add_entry(pid, %{date: ~D[2023-01-27], title: "lorem ipsum"}
 iex(4)> TodoServer2.entries(pid, ~D[2023-01-27])                                 
 [%{date: ~D[2023-01-27], title: "lorem ipsum"}]
 ```
+
+## Chapter 8
+
+```
+elixir ch08-01-Errors.exs
+elixir ch08-02-Links.exs
+```
