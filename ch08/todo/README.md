@@ -41,3 +41,26 @@ Starting todo server for foo list.
 iex(7)> foo = Todo.Cache.server_process("foo list")
 #PID<0.176.0>
 ```
+
+```elixir
+iex(1)> Todo.System.start_link
+Starting todo cache.
+Starting todo database.
+Starting todo database worker.
+Starting todo database worker.
+Starting todo database worker.
+{:ok, #PID<0.207.0>}
+
+iex(2)> foo = Todo.Cache.server_process("foo list")
+Starting todo server for foo list.
+#PID<0.214.0>
+
+iex(3)> foo = Todo.Cache.server_process("foo list")
+#PID<0.214.0>
+
+iex(4)> Todo.Server.add_entry(foo, %{date: ~D[2023-03-03], title: "do this!"})
+:ok
+
+iex(5)> Todo.Server.entries(foo, ~D[2023-03-03])
+[%{date: ~D[2023-03-03], id: 6, title: "do this!"}]
+```

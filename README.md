@@ -21,7 +21,7 @@ iex(1)> Fraction.sub(Fraction.new(2,5), Fraction.new(1,4)) |> IO.inspect |> Frac
 %Fraction{a: 3, b: 20}
 0.15
 
-iex(2)> Fraction.new(1,3) |> IO.puts   
+iex(2)> Fraction.new(1,3) |> IO.puts
 1 / 3
 :ok
 ```
@@ -47,7 +47,7 @@ iex(5)> todos = TodoList1.add_entry(todos, ~D[2023-01-20], "consectetur adipisci
   ~D[2023-01-20] => ["consectetur adipiscing", "dolor sit amet"]
 }
 
-iex(6)> todos = TodoList1.add_entry(todos, ~D[2023-01-21], "sed do eiusmod")        
+iex(6)> todos = TodoList1.add_entry(todos, ~D[2023-01-21], "sed do eiusmod")
 %{
   ~D[2023-01-19] => ["lorem ipsum"],
   ~D[2023-01-20] => ["consectetur adipiscing", "dolor sit amet"],
@@ -193,7 +193,7 @@ iex(2)> KeyValueStore1.put(kv, :foo, "this is foo (atom)")
 iex(3)> KeyValueStore1.put(kv, "foo", "this is foo (string)")
 :ok
 
-iex(4)> KeyValueStore1.put(kv, :bar, "this is bar (atom)")   
+iex(4)> KeyValueStore1.put(kv, :bar, "this is bar (atom)")
 :ok
 
 iex(5)> KeyValueStore1.get(kv, :foo)
@@ -210,13 +210,13 @@ nil
 
 Adds support for asyncronous calls (i.e. _cast_ in Erlang ecosystem jargon).
 ```elixir
-iex(1)> kv = KeyValueStore2.start                         
+iex(1)> kv = KeyValueStore2.start
 #PID<0.112.0>
 
 iex(2)> KeyValueStore2.put(kv, :foo, "this is foo (atom)")
 {:cast, {:put, :foo, "this is foo (atom)"}}
 
-iex(3)> KeyValueStore2.get(kv, :foo)                      
+iex(3)> KeyValueStore2.get(kv, :foo)
 "this is foo (atom)"
 
 iex(4)> KeyValueStore2.get(kv, :bar)
@@ -277,18 +277,18 @@ iex(3)> KeyValueStore3.get(kv, :foo)
 iex(1)> {:ok, kv} = KeyValueStore3.start()
 {:ok, #PID<0.112.0>}
 
-iex(2)> Process.alive?(kv)                
+iex(2)> Process.alive?(kv)
 true
 :cleanup1 message received
 :cleanup1 message received
 :cleanup2 message received
-:cleanup1 message received                
+:cleanup1 message received
 
 iex(3)> KeyValueStore3.stop(kv)
 cleanup before server is terminated
 :ok
 
-iex(4)> Process.alive?(kv)     
+iex(4)> Process.alive?(kv)
 false
 ```
 
@@ -304,7 +304,7 @@ iex(2)> TodoServer2.entries(pid, ~D[2023-01-27])
 iex(3)> TodoServer2.add_entry(pid, %{date: ~D[2023-01-27], title: "lorem ipsum"})
 :ok
 
-iex(4)> TodoServer2.entries(pid, ~D[2023-01-27])                                 
+iex(4)> TodoServer2.entries(pid, ~D[2023-01-27])
 [%{date: ~D[2023-01-27], title: "lorem ipsum"}]
 ```
 
@@ -313,4 +313,31 @@ iex(4)> TodoServer2.entries(pid, ~D[2023-01-27])
 ```
 elixir ch08-01-Errors.exs
 elixir ch08-02-Links.exs
+```
+
+## Chapter 9
+
+```elixir
+iex(1)> Registry.start_link(name: :my_registry, keys: :unique)
+{:ok, #PID<0.108.0>}
+
+iex(2)> EchoServer.start_link("echo1")
+{:ok, #PID<0.111.0>}
+
+iex(3)> EchoServer.start_link("echo2")
+{:ok, #PID<0.113.0>}
+
+iex(4)> EchoServer.start_link("echo2")
+{:error, {:already_started, #PID<0.113.0>}}
+
+iex(5)> EchoServer.call("echo1", :echo_me)
+:echo_me
+
+iex(6)> EchoServer.call("echo2", :echo_me)
+:echo_me
+
+iex(7)> EchoServer.call("echo3", :echo_me)
+** (exit) exited in: GenServer.call({:via, Registry, {:my_registry, {EchoServer, "echo3"}}}, :echo_me, 5000)
+    ** (EXIT) no process: the process is not alive or there's no process currently associated with the given name, possibly because its application isn't started
+    (elixir 1.14.1) lib/gen_server.ex:1027: GenServer.call/3
 ```

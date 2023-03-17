@@ -2,6 +2,7 @@ BEAM := \
 Elixir.Calculator.beam \
 Elixir.DatabaseServer1.beam \
 Elixir.DatabaseServer2.beam \
+Elixir.EchoServer.beam \
 Elixir.Fraction.beam \
 Elixir.KeyValueStore1.beam \
 Elixir.KeyValueStore2.beam \
@@ -28,6 +29,10 @@ Elixir.DatabaseServer1.beam : ch05-01-DatabaseServer1.ex
 	@elixirc $^
 
 Elixir.DatabaseServer2.beam : ch05-01-DatabaseServer2.ex
+	@echo "building: $@"
+	@elixirc $^
+
+Elixir.EchoServer.beam : ch09-01-EchoServer.ex
 	@echo "building: $@"
 	@elixirc $^
 
